@@ -227,9 +227,6 @@ layers configuration. You are free to put any user code."
     (linum-relative-toggle))
 
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
-  (add-hook 'prog-mode-hook (lambda ()
-                             (interactive)
-                             (setq show-trailing-whitespace 1)))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
