@@ -24,8 +24,15 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      (shell :variables shell-default-shell 'ansi-term)
+     (auto-completion :variables
+                      auto-completion-enable-help-tooltip nil
+                      auto-completion-enable-sort-by-usage t
+                      auto-completion-enable-snippets-in-popup t
+                      auto-completion-return-key-behavior 'complete
+                      auto-completion-tab-key-behavior 'cycle
+                      auto-completion-complete-with-key-sequence nil
+                      auto-completion-private-snippets-directory nil)
      asciidoc
-     auto-completion
      chrome
      clojure
      elixir
@@ -39,6 +46,7 @@ values."
      markdown
      osx
      racket
+     restclient
      ruby
      ruby-on-rails
      semantic
@@ -90,12 +98,8 @@ values."
    ;; Press <SPC> T n to cycle to the next theme in the list (works great
    ;; with 2 themes variants, one dark and one light)
    dotspacemacs-themes '(solarized-dark
-                         spacemacs-dark
-                         spacemacs-light
-                         solarized-light
-                         leuven
-                         monokai
-                         zenburn)
+                         solarized-light)
+
    ;; If non nil the cursor color matches the state color.
    dotspacemacs-colorize-cursor-according-to-state t
    ;; Default font. `powerline-scale' allows to quickly tweak the mode-line
@@ -221,6 +225,9 @@ layers configuration. You are free to put any user code."
 
   (with-eval-after-load 'linum
     (linum-relative-toggle))
+
+  (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'prog-mode-hook 'show-trailing-whitespace)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
