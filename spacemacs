@@ -37,10 +37,15 @@ values."
      clojure
      elixir
      elm
+     dash
      emacs-lisp
      erlang
      git
-     haskell
+     (haskell :variables
+              haskell-enable-ghc-mod-support nil
+              haskell-enable-ghci-ng-support nil
+              haskell-enable-hindent-style "gibiansky")
+     idris
      html
      javascript
      markdown
@@ -54,6 +59,7 @@ values."
      sql
      syntax-checking
      xing
+     org
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -161,10 +167,10 @@ values."
    dotspacemacs-loading-progress-bar t
    ;; If non nil the frame is fullscreen when Emacs starts up. (default nil)
    ;; (Emacs 24.4+ only)
-   dotspacemacs-fullscreen-at-startup nil
+   dotspacemacs-fullscreen-at-startup t
    ;; If non nil `spacemacs/toggle-fullscreen' will not use native fullscreen.
    ;; Use to disable fullscreen animations in OSX. (default nil)
-   dotspacemacs-fullscreen-use-non-native nil
+   dotspacemacs-fullscreen-use-non-native t
    ;; If non nil the frame is maximized when Emacs starts up.
    ;; Takes effect only if `dotspacemacs-fullscreen-at-startup' is nil.
    ;; (default nil) (Emacs 24.4+ only)
@@ -185,7 +191,7 @@ values."
    dotspacemacs-smooth-scrolling t
    ;; If non-nil smartparens-strict-mode will be enabled in programming modes.
    ;; (default nil)
-   dotspacemacs-smartparens-strict-mode nil
+   dotspacemacs-smartparens-strict-mode t
    ;; Select a scope to highlight delimiters. Possible values are `any',
    ;; `current', `all' or `nil'. Default is `all' (highlight any scope and
    ;; emphasis the current one). (default 'all)
@@ -214,11 +220,13 @@ user code."
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
   (global-linum-mode)
+
   ;; prevent stupid ruby-end-mode todo its work
   (add-hook 'ruby-mode-hook (lambda () (ruby-end-mode -1)))
   (add-hook 'ruby-mode-hook 'rvm-activate-corresponding-ruby)
   (add-hook 'enh-ruby-mode-hook (lambda () (ruby-end-mode -1)))
   (add-hook 'enh-ruby-mode-hook 'rvm-activate-corresponding-ruby)
+  (remove-hook 'ac-sources 'ac-source-robe)
 
   (global-set-key (kbd "S-<right>") 'sp-forward-slurp-sexp)
   (global-set-key (kbd "S-<left>") 'sp-forward-barf-sexp)
@@ -227,6 +235,17 @@ layers configuration. You are free to put any user code."
     (linum-relative-toggle))
 
   (add-hook 'before-save-hook 'delete-trailing-whitespace)
+  (add-hook 'magit-mode (lambda () (line-number-mode -1)))
+
+  ; lisp stuff
+  (setq clojure-enable-fancify-symbols t)
+
+  ; haskell stuff
+  (add-to-list 'exec-path "~/.local/bin/")
+  (add-to-list 'exec-path "~/.cabal/bin/")
+
+  (spacemacs/set-leader-keys-for-major-mode 'haskell-mode
+    "mht"  'ghc-show-type)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -236,7 +255,6 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
- '(initial-frame-alist (quote ((fullscreen . maximized))))
  '(rspec-use-rake-when-possible nil)
  '(rspec-use-rvm t)
  '(ruby-end-check-statement-modifiers nil)
