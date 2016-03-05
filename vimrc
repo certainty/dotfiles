@@ -42,6 +42,7 @@ Plugin 'tpope/vim-repeat'
 Plugin 'bling/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'vim-colors-solarized'
+Plugin 'christoomey/vim-tmux-navigator'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -51,6 +52,8 @@ set background=dark
 colorscheme solarized
 
 let g:airline#extensions#tabline#enabled = 1
+let g:tmux_navigator_no_mappings = 1
+
 set statusline+=%{fugitive#statusline()}
 
 " Mappings
@@ -71,6 +74,13 @@ nnoremap <Leader>pm :CtrlPMRU<CR>
 
 nnoremap <Leader>gd :GStatus<CR>
 nnoremap <Leader>gc :GCommit<CR>
+
+" TMUX integration
+nnoremap <silent> <Leader>th :TmuxNavigateLeft<cr>
+nnoremap <silent> <Leader>tj :TmuxNavigateDown<cr>
+nnoremap <silent> <Leader>tk :TmuxNavigateUp<cr>
+nnoremap <silent> <Leader>tl :TmuxNavigateRight<cr>
+nnoremap <silent> {Previous-Mapping} :TmuxNavigatePrevious<cr>
 
 " Local config
 if filereadable($HOME . "/.vimrc.local")
