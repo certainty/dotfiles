@@ -6,7 +6,8 @@ set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 
 Plugin 'VundleVim/Vundle.vim'
-PLugin 'docunext/closetag.vim'
+Plugin 'tpope/vim-dispatch.git'
+Plugin 'docunext/closetag.vim'
 Plugin 'scrooloose/nerdtree'
 Plugin 'mileszs/ack.vim'
 Plugin 'tyok/nerdtree-ack'
@@ -91,8 +92,22 @@ let g:tmux_navigator_no_mappings = 1
 set statusline+=%{fugitive#statusline()}
 
 set updatetime=750
+
+" gitgutter
 let g:gitgutter_realtime=1
 let g:gitgutter_eager=1
+
+"syntastic
+let g:syntastic_enable_signs=1
+let g:syntastic_quiet_messages={'level': 'warnings'}
+let g:syntastic_error_symbol='✗'
+let g:syntastic_warning_symbol='⚠'
+
+" vim-test
+let test#strategy = "dispatch"
+
+" you complete me
+let g:ycm_key_list_select_completion = ['<ENTER>', '<Down>']
 
 if has("autocmd")
   " Kill all the whitespace
