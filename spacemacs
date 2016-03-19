@@ -42,7 +42,7 @@ values."
      erlang
      git
      (haskell :variables
-              haskell-enable-ghc-mod-support nil
+              haskell-enable-ghc-mod-support t
               haskell-enable-ghci-ng-support nil
               haskell-enable-hindent-style "gibiansky")
      idris
@@ -58,8 +58,9 @@ values."
      spell-checking
      sql
      syntax-checking
+     (org :variables
+          org-enable-github-support t)
      xing
-     org
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -67,7 +68,7 @@ values."
    ;; configuration in `dotspacemacs/config'.
    dotspacemacs-additional-packages '()
    ;; A list of packages and/or extensions that will not be install and loaded.
-   dotspacemacs-excluded-packages '(ruby-end-mode)
+   dotspacemacs-excluded-packages '(ruby-end-mode helm-gitignore persp-mode)
    ;; If non-nil spacemacs will delete any orphan packages, i.e. packages that
    ;; are declared in a layer which is not a member of
    ;; the list `dotspacemacs-configuration-layers'. (default t)
@@ -244,8 +245,9 @@ layers configuration. You are free to put any user code."
   (add-to-list 'exec-path "~/.local/bin/")
   (add-to-list 'exec-path "~/.cabal/bin/")
 
-  (spacemacs/set-leader-keys-for-major-mode 'haskell-mode
-    "mht"  'ghc-show-type)
+  (with-eval-after-load 'org
+    (setq org-agenda-files '("~/org")))
+  ;; (spacemacs/set-leader-keys-for-major-mode 'haskell-mode "mht"  'ghc-show-type)
 )
 
 ;; Do not write anything past this comment. This is where Emacs will
@@ -255,8 +257,9 @@ layers configuration. You are free to put any user code."
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(paradox-github-token t)
  '(rspec-use-rake-when-possible nil)
- '(rspec-use-rvm t)
+ '(rspec-use-rvm t t)
  '(ruby-end-check-statement-modifiers nil)
  '(ruby-end-insert-newline nil))
 (custom-set-faces
