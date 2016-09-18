@@ -1,0 +1,27 @@
+[user]
+	name = David Krentzlin
+	email = david.krentzlin@xing.com
+[alias]
+    ci = commit
+    st = status
+    co = checkout
+    br = branch
+
+[push]
+    default = current
+[core]
+	editor = vim -u NONE
+	excludesfile = ~/.gitignore
+[filter "lfs"]
+	clean = git-lfs clean %f
+	smudge = git-lfs smudge %f
+	required = true
+[merge]
+	tool = kdiff3
+
+;[transfer]
+        ;fsckobjects = true
+;[fetch]
+        ;fsckobjects = true
+;[receive]
+        ;fsckObjects = true

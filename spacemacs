@@ -13,8 +13,6 @@ values."
    dotspacemacs-distribution 'spacemacs
    ;; List of additional paths where to look for configuration layers.
    ;; Paths must have a trailing slash (i.e. `~/.mycontribs/')
-   dotspacemacs-configuration-layer-path '()
-   ;; List of configuration layers to load. If it is the symbol `all' instead
    ;; of a list then all discovered layers will be installed.
    dotspacemacs-configuration-layers
    '(
@@ -24,14 +22,18 @@ values."
      ;; <M-m f e R> (Emacs style) to install them.
      ;; ----------------------------------------------------------------
      (shell :variables shell-default-shell 'ansi-term)
-     (auto-completion :variables
-                      auto-completion-enable-help-tooltip nil
-                      auto-completion-enable-sort-by-usage t
-                      auto-completion-enable-snippets-in-popup t
-                      auto-completion-return-key-behavior 'complete
-                      auto-completion-tab-key-behavior 'cycle
-                      auto-completion-complete-with-key-sequence nil
-                      auto-completion-private-snippets-directory nil)
+     (auto-completion
+      (haskell :variables haskell-completion-backend 'intero)
+
+      :variables
+      auto-completion-enable-help-tooltip nil
+      auto-completion-enable-sort-by-usage t
+      auto-completion-enable-snippets-in-popup t
+      auto-completion-return-key-behavior 'complete
+      auto-completion-tab-key-behavior 'cycle
+      auto-completion-complete-with-key-sequence nil
+      auto-completion-private-snippets-directory nil)
+
      asciidoc
      chrome
      clojure
@@ -41,26 +43,24 @@ values."
      emacs-lisp
      erlang
      git
-     (haskell :variables
-              haskell-enable-ghc-mod-support t
-              haskell-enable-ghci-ng-support nil
-              haskell-enable-hindent-style "gibiansky")
-     idris
+     github
      html
      javascript
      markdown
      osx
-     racket
      restclient
      ruby
      ruby-on-rails
      semantic
      spell-checking
+     scheme
+     (haskell :variables haskell-enable-hindent-style "johan-tibell")
      sql
      syntax-checking
-     (org :variables
-          org-enable-github-support t)
+     (org :variables org-enable-github-support t)
+
      xing
+     certainty-fastlane
      )
    ;; List of additional packages that will be installed without being
    ;; wrapped in a layer. If you need some configuration for these
@@ -156,7 +156,7 @@ values."
    dotspacemacs-enable-paste-micro-state nil
    ;; Which-key delay in seconds. The which-key buffer is the popup listing
    ;; the commands bound to the current keystroke sequence. (default 0.4)
-   dotspacemacs-which-key-delay 0.4
+   dotspacemacs-which-key-delay 0.1
    ;; Which-key frame position. Possible values are `right', `bottom' and
    ;; `right-then-bottom'. right-then-bottom tries to display the frame to the
    ;; right; if there is insufficient space it displays it at the bottom.
@@ -214,13 +214,20 @@ values."
   "Initialization function for user code.
 It is called immediately after `dotspacemacs/init'.  You are free to put any
 user code."
+  (add-hook 'enh-ruby-mode-hook 'remove-enh-magic-comment)
+  (setq ruby-insert-encoding-magic-comment nil)
   (setq-default ruby-version-manager 'rvm))
 
 (defun dotspacemacs/user-config ()
   "Configuration function for user code.
  This function is called at the very end of Spacemacs initialization after
 layers configuration. You are free to put any user code."
+
+  (which-key-mode -1)
   (global-linum-mode)
+
+  ;; evil multiple cursors
+  (global-evil-mc-mode)
 
   ;; prevent stupid ruby-end-mode todo its work
   (add-hook 'ruby-mode-hook (lambda () (ruby-end-mode -1)))
@@ -230,7 +237,7 @@ layers configuration. You are free to put any user code."
   (remove-hook 'ac-sources 'ac-source-robe)
 
   (global-set-key (kbd "S-<right>") 'sp-forward-slurp-sexp)
-  (global-set-key (kbd "S-<left>") 'sp-forward-barf-sexp)
+  (global-set-key (kbd "S-<left>")  'sp-forward-barf-sexp)
 
   (with-eval-after-load 'linum
     (linum-relative-toggle))
@@ -242,12 +249,17 @@ layers configuration. You are free to put any user code."
   (setq clojure-enable-fancify-symbols t)
 
   ; haskell stuff
+  (add-hook 'haskell-mode-hook 'turn-on-haskell-indentation)
   (add-to-list 'exec-path "~/.local/bin/")
   (add-to-list 'exec-path "~/.cabal/bin/")
 
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq css-indent-offset 2)
+
   (with-eval-after-load 'org
-    (setq org-agenda-files '("~/org")))
-  ;; (spacemacs/set-leader-keys-for-major-mode 'haskell-mode "mht"  'ghc-show-type)
+    (setq org-agenda-files '("~/org" "~/Xing/org")))
 )
 
 ;; Do not write anything past this comment. This is where Emacs will

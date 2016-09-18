@@ -1,0 +1,24 @@
+# -*- mode: gitignore; -*-
+recentf
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+auto-save-list
+tramp
+.\#*
+
+# Org-mode
+.org-id-locations
+*_archive
+
+# flymake-mode
+*_flymake.*.
+.DS_Store
+.stack-work
+.tool-versions
+*.rdb
+
+# per project org file
+THIS.org

@@ -1,4 +1,3 @@
-syntax on
 set nocompatible
 " Plugins
 filetype off                  " required
@@ -26,9 +25,11 @@ Plugin 'vim-colors-solarized'
 Plugin 'christoomey/vim-tmux-navigator'
 Plugin 'janko-m/vim-test'
 Plugin 'elixir-lang/vim-elixir'
-Plugin 'Valloric/YouCompleteMe'
 Plugin 'tyru/open-browser-github.vim'
 Plugin 'tyru/open-browser.vim'
+Plugin 'christoomey/vim-tmux-runner'
+Plugin 'slashmili/alchemist.vim'
+Plugin 'powerman/vim-plugin-AnsiEsc'
 
 call vundle#end()            " required
 filetype plugin indent on    " required
@@ -63,10 +64,9 @@ set complete+=kspell
 set diffopt+=vertical
 set nocompatible
 set laststatus=2
-set paste
+"set paste
 set list listchars=tab:»·,trail:·,nbsp:·
 set infercase
-set splitright
 set noeb
 set nowb
 set textwidth=120
@@ -104,10 +104,7 @@ let g:syntastic_error_symbol='✗'
 let g:syntastic_warning_symbol='⚠'
 
 " vim-test
-let test#strategy = "dispatch"
-
-" you complete me
-let g:ycm_key_list_select_completion = ['<ENTER>', '<Down>']
+let test#strategy = "basic"
 
 if has("autocmd")
   " Kill all the whitespace
@@ -139,6 +136,9 @@ endfor
 
 " Mappings
 
+nmap j gj
+nmap k gk
+
 "disable arrows
 noremap <Up> <NOP>
 noremap <Down> <NOP>
@@ -161,9 +161,9 @@ nnoremap <Leader>wd <C-w>q
 noremap <leader>j <C-W>j<C-W>_
 noremap <leader>k <C-W>k<C-W>_
 
-nnoremap <F3> :set hlsearch!<CR>                        " toogle search highlighting
-nnoremap <F2> :set paste!<CR>                           " toogle paste mode
-nnoremap <5> :!ctags -R<CR>                            " ctags
+nnoremap <F3> :set hlsearch!<CR>
+nnoremap <F2> :set paste!<CR>
+nnoremap <5> :!ctags -R<CR>
 
 nnoremap <Leader>f :CtrlP<CR>
 nnoremap <Leader>b :CtrlPBuffer<CR>
